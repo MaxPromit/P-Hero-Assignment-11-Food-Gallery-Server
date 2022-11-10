@@ -99,9 +99,22 @@ async function run() {
       const result = await reviewsCollection.insertOne(reviews);
       res.send(result);
     });
+    app.patch("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const message = req.body.message;
+      const query = { _id: ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+            message: message
+        }
+      }
+      const result = await reviewsCollection.updateOne(query,updatedDoc)
+      res.send(result)
+
+    });
     app.delete('/reviews/:id', async(req,res)=>{
         const id = req.params.id;
-        console.log(id);
+        // console.log(id);
         const query = {_id: ObjectId(id)};
         const result = await reviewsCollection.deleteOne(query)
         res.send(result)

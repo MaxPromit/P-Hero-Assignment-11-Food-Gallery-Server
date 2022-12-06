@@ -85,7 +85,7 @@ async function run() {
           email: req.query.email,
         };
       }
-      const cursor = reviewsCollection.find(query);
+      const cursor = reviewsCollection.find(query).sort({date: -1});
       const reviews = await cursor.toArray();
       res.send(reviews);
     });
@@ -96,6 +96,7 @@ async function run() {
     });
     app.post("/reviews", async (req, res) => {
       const reviews = req.body;
+      reviews.date = new Date();
       const result = await reviewsCollection.insertOne(reviews);
       res.send(result);
     });
